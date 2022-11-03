@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import {ref, onMounted, computed, watch} from "vue"
+import Welcome from "./components/Welcome.vue"
 
 </script>
 
 <template>
-  <div>checking</div>
+  <main class="app">
+    <Welcome />
+  </main>
 </template>
