@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import type { TodoType } from "./types/TodoType";
+import ShowTodo from "./ShowTodo.vue";
+
 
 const inputContent = ref<string>("");
 const inputCategory = ref<"business" | "personal" | "">("");
@@ -17,6 +19,9 @@ function addTodo(): void {
     done: false,
     createdAt: new Date().getTime(),
   });
+
+  inputContent.value = ""
+  inputCategory.value = ""
 }
 
 watch(
@@ -26,6 +31,14 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(() => {
+  todos.value = JSON.parse(localStorage.getItem("todos")!) || [];
+});
+
+function removeTodo(todo: TodoType): void {
+  todos.value = todos.value.filter((item) => item !== todo);
+}
 </script>
 
 <template>
@@ -68,4 +81,5 @@ watch(
       <input type="submit" value="Add todo" />
     </form>
   </section>
+  <ShowTodo :todos="todos" @removeTodo="removeTodo" />
 </template>
